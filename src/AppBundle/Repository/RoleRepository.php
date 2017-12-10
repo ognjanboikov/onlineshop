@@ -1,6 +1,8 @@
 <?php
 
 namespace AppBundle\Repository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * RoleRepository
@@ -10,7 +12,12 @@ namespace AppBundle\Repository;
  */
 class RoleRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function firstRoleAction(){
 
+    public function getFirst(){
+        return $this->getEntityManager()
+            ->createQuery(
+                'SELECT p FROM AppBundle:Role p WHERE p.id = 1'
+            )
+            ->getResult();
     }
 }

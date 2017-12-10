@@ -2,10 +2,17 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\AppBundle;
+use AppBundle\Controller\SecurityController;
+use AppBundle\Repository\RoleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use AppBundle\Entity\Role;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use AppBundle\Repository;
+
 
 /**
  * User
@@ -187,10 +194,13 @@ class User implements UserInterface, \Serializable
         foreach ($this->roles as $role){
             $roles[] = $role->getName();
         }
-        if(empty($roles)){
-            $roles[] = 'ROLE_USER';
-        }
         return $roles;
+        return $this->roles;
+    }
+
+    public function setRoles($role){
+        $this->roles = $role;
+        return $this;
     }
 
 

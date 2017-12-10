@@ -4,10 +4,13 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use AppBundle\Form\UserType;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use AppBundle\Entity\Role;
 
 class UserController extends Controller
 {
@@ -24,13 +27,20 @@ class UserController extends Controller
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
+
+            $em = $this->getDoctrine()->getManager();
+            $roleFromDB = $this->getDoctrine()
+                ->getRepository(Role::class)
+                ->getFirst();
+            $user->setRoles($roleFromDB);
             $password = $passwordEncoder->encodePassword($user,$user->getPlainPassword());
             $user->setPassword($password);
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
 
-            return $this->redirectToRoute("cat_index");
+           // $this->redirectToRoute("cat_index");
         }
         return $this->render('users/register.html.twig',
             array('form' => $form->createView()));

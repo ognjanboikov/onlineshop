@@ -61,6 +61,9 @@ class Role
     public function getName()
     {
         return $this->name;
+
     }
+
+
 }
 

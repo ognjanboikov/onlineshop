@@ -9,6 +9,9 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use AppBundle\Entity\Role;
+use Doctrine\ORM\EntityRepository;
 
 class UserType extends AbstractType
 {
@@ -26,6 +29,16 @@ class UserType extends AbstractType
             ])
             ->add('fullName')
             ->add('email', EmailType::class)
+            //->add('roles', EntityType::class, array(
+              //  'class' => Role::class,
+             //   'query_builder' => function (EntityRepository $er) {
+            //        return $er->createQueryBuilder('p')
+            //            ->where('p.id = :value')
+            //            ->setParameter('value', '1');
+
+           //     },
+           //     'choice_label' => 'name',
+         //   ))
             ->add('submit', SubmitType::class);
     }
     

@@ -5,7 +5,9 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\category;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Entity\Role;
 
 /**
  * Category controller.
@@ -23,8 +25,8 @@ class categoryController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
         $categories = $em->getRepository('AppBundle:category')->findAll();
+
 
         return $this->render('category/index.html.twig', array(
             'categories' => $categories,
