@@ -3,14 +3,43 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     </head>
     <body>
-        {% block body %}{% endblock %}
+
         {% block javascripts %}{% endblock %}
-        {% if app.user %}
-            {{ app.user.roles|join(',') }}
-        {% endif %}
+        <nav class="navbar navbar-light bg-faded justify-content-between flex-nowrap flex-row">
+            <div class="container">
+                <a href="/" class="navbar-brand float-left">Ogun Online Shop</a>
+                <ul class="nav navbar-nav flex-row float-left">
+                    {% if app.user %}
+                        <li class="nav-item"><span class="nav-link pr-3"><b>Hi, {{ app.user.fullName }} </b>:)</span></li>
+                        <li class="nav-item"><a class="nav-link pr-3" href="/profile">Profile</a></li>
+                        <li class="nav-item"><a class="nav-link pr-3" href="/logout">LogOut</a></li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link pr-3" href="/login">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/register">Sign up</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+        <div class="container-fluid">
+            <div class="row">
+        <div style="width: 100%; align-self: center"  >
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-header">
+                {{ render(controller('AppBundle:category:listMainCategories')) }}
+            </div>
+        </div>
+        </div>
+        {% block body %}{% endblock %}
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
     </body>
 </html>

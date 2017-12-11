@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\category;
+use AppBundle\Repository\categoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -11,15 +12,16 @@ use AppBundle\Entity\Role;
 
 /**
  * Category controller.
+
  *
- * @Route("cat")
  */
 class categoryController extends Controller
 {
+
     /**
      * Lists all category entities.
      *
-     * @Route("/", name="cat_index")
+     * @Route("/category_list", name="cat_index")
      * @Method("GET")
      */
     public function indexAction()
@@ -27,7 +29,8 @@ class categoryController extends Controller
         $em = $this->getDoctrine()->getManager();
         $categories = $em->getRepository('AppBundle:category')->findAll();
 
-
+        $c = $em->getRepository('AppBundle:category')->getMainCategories();
+        var_dump($c);
         return $this->render('category/index.html.twig', array(
             'categories' => $categories,
         ));
@@ -36,7 +39,7 @@ class categoryController extends Controller
     /**
      * Creates a new category entity.
      *
-     * @Route("/new", name="cat_new")
+     * @Route("/category_new", name="cat_new")
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
@@ -62,7 +65,7 @@ class categoryController extends Controller
     /**
      * Finds and displays a category entity.
      *
-     * @Route("/{id}", name="cat_show")
+     * @Route("category_show/{id}", name="cat_show")
      * @Method("GET")
      */
     public function showAction(category $category)
@@ -78,7 +81,7 @@ class categoryController extends Controller
     /**
      * Displays a form to edit an existing category entity.
      *
-     * @Route("/{id}/edit", name="cat_edit")
+     * @Route("category_edit/{id}", name="cat_edit")
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, category $category)
@@ -88,6 +91,7 @@ class categoryController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+
 
             $this->getDoctrine()->getManager()->flush();
 
@@ -104,7 +108,7 @@ class categoryController extends Controller
     /**
      * Deletes a category entity.
      *
-     * @Route("/{id}", name="cat_delete")
+     * @Route("category_delete/{id}", name="cat_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, category $category)
@@ -135,5 +139,28 @@ class categoryController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    public function listMainCategoriesAction(){
+        $em = $this->getDoctrine()->getManager();
+        $categories = $em->getRepository('AppBundle:category')->getMainCategories();
+
+        return $this->render(
+            'listMainCategories.html.twig',
+            array('categories' => $categories)
+        );
+    }
+    /**
+     * @Route("/showcategory/{parent}")
+     * @Method({"GET"})
+     */
+    public function ChildrenOfCategory($parent){
+        $em = $this->getDoctrine()->getManager();
+         $categories = $em->getRepository('AppBundle:category')->getChildrenOfCategory($parent);
+
+        return $this->render(
+            'listChildrenOfCategory.html.twig',
+            array('categories' => $categories)
+        );
     }
 }

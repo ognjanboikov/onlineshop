@@ -20,8 +20,10 @@ class categoryType extends AbstractType
             ->add('name')
             ->add('parent', EntityType::class, array(
                 'class' => 'AppBundle:category',
+                'placeholder' => 'Choose an category',
                 'choice_label' => 'name',
-                'choice_value' => 'id'
+                'choice_value' => 'id',
+                'required' => false,
             ))
             ->add('isActive');
     }

@@ -1,0 +1,16 @@
+<div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span4"></div>
+                <!--/span-->
+                <div class="span4" align="center">
+                    <div class="hero-unit" align="center">
+                        {% for cat in categories %}
+                        |<a href="/showcategory/{{ cat.id }}" class="btn btn-default navbar-btn"> {{ cat.name }}</a>
+                        {% endfor %}|
+                    </div>
+                </div>
+                <!-- /span -->
+                <div class="span4"></div>
+            </div>
+            <!-- /row -->
+        </div>

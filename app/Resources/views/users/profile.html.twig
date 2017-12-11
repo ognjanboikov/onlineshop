@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span4"></div>
+            <!--/span-->
+            <div class="span4" align="center">
+                <div class="hero-unit" align="center">
+                    <b>{{ user.fullName }}</b>,<br />your Username is <b> {{ user.userName }} </b>,<br />your E-mail is <b> {{ user.email }} </b>,<br />you have <b> {{ user.cash }}BGN </b>,<br /> you have orders for <b> {{ user.usedCash }}BGN </b>,<br /> you are registered user here from <b> {{ user.registerDate|date('Y-m-d') }} </b>
+                </div>
+            </div>
+            <!-- /span -->
+            <div class="span4"></div>
+        </div>
+        <!-- /row -->
+    </div>
+{% endblock %}

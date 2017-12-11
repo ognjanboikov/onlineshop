@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Users list</h1>
+
+    <table>
+        <thead>
+        <tr>
+
+            <th>Username</th>
+            <th>Full Name</th>
+            <th>E-mail</th>
+            <th>Role</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+
+                <td>{{ user.userName }}</td>
+                <td>{{ user.fullName }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.roles|join(',') }}</td>
+
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="#">Create a new category</a>
+        </li>
+    </ul>
+{% endblock %}

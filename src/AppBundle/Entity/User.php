@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
-use AppBundle\Entity\Role;
+use AppBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Repository;
 
@@ -61,6 +61,34 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(name="email", type="string", length=255, unique=true)
      */
     private $email;
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="cash", type="decimal", precision=10, scale=2)
+     */
+    private $cash;
+
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="usedCash", type="decimal", precision=10, scale=2)
+     */
+    private $usedCash;
+
+    /**
+     * @var datetime
+     *
+     * @ORM\Column(name="registerDate", type="datetime")
+     */
+    private $registerDate;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="isBanned", type="boolean", nullable=true)
+     */
+    private $isBanned;
+
     /**
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Role")
      * @ORM\JoinTable(name="user_roles",
@@ -258,5 +286,68 @@ class User implements UserInterface, \Serializable
     {
         $this->plainPassword = $plainPassword;
     }
+    /**
+     * @return decimal
+     */
+    public function getCash()
+    {
+        return $this->cash;
+    }
+
+    /**
+     * @param decimal $cash
+     */
+    public function setCash($cash)
+    {
+        $this->cash = $cash;
+    }
+    /**
+     * @return decimal
+     */
+    public function getUsedCash()
+    {
+        return $this->usedCash;
+    }
+
+    /**
+     * @param decimal $usedCash
+     */
+    public function setUsedCash($usedCash)
+    {
+        $this->usedCash = $usedCash;
+    }
+
+    /**
+     * @return datetime
+     */
+    public function getRegisterDate()
+    {
+        return $this->registerDate;
+    }
+
+    /**
+     * @param datetime $registerDate
+     */
+    public function setRegisterDate($registerDate)
+    {
+        $this->registerDate = $registerDate;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getisBanned()
+    {
+        return $this->isBanned;
+    }
+
+    /**
+     * @param mixed $isBanned
+     */
+    public function setIsBanned($isBanned)
+    {
+        $this->isBanned = $isBanned;
+    }
+
 }
 

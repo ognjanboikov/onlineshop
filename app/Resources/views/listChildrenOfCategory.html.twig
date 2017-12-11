@@ -1,0 +1,6 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+{% for cat in categories %}
+    <a href="/showcategory/{{ cat.id }}" class="btn btn-default navbar-btn">{{ cat.name }}</a>
+{% endfor %}
+{% endblock %}
