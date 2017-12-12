@@ -8,6 +8,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -69,6 +72,35 @@ class UserController extends Controller
         $user = $em->getRepository('AppBundle:User')->findOneById($userId);
         return $this->render('users/profile.html.twig', array(
             'user' => $user,
+        ));
+    }
+    /**
+     * @Route("/profile/edit", name="user_profile_edit")*
+     */
+    public function editProfileActio(Request $request)
+    {
+        $userId = $this->getUser()->getId();
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('AppBundle:User')->findOneById($userId);
+        $form = $this->createFormBuilder($user)
+            ->add('fullName', TextType::class)
+            ->add('email', EmailType::class, array('label' => 'E-mail'))
+            ->add('save', SubmitType::class, array('label' => 'Save'))
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $user = $form->getData();
+
+
+             $em = $this->getDoctrine()->getManager();
+             $em->persist($user);
+             $em->flush();
+
+            return $this->redirectToRoute('user_profile');
+        }
+        return $this->render('users/editProfile.html.twig', array(
+            'form' => $form->createView(),
         ));
     }
 }

@@ -29,16 +29,6 @@ class UserType extends AbstractType
             ])
             ->add('fullName')
             ->add('email', EmailType::class)
-            //->add('roles', EntityType::class, array(
-              //  'class' => Role::class,
-             //   'query_builder' => function (EntityRepository $er) {
-            //        return $er->createQueryBuilder('p')
-            //            ->where('p.id = :value')
-            //            ->setParameter('value', '1');
-
-           //     },
-           //     'choice_label' => 'name',
-         //   ))
             ->add('submit', SubmitType::class);
     }
     

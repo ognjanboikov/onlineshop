@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span4"></div>
+        <!--/span-->
+        <div class="span4" align="center">
+            <div class="hero-unit" align="center">
+{{ form_start(form) }}
+{{ form_widget(form) }}
+{{ form_end(form) }}
+                <br /><br />
+                <a href="{{ path('user_profile') }}">Go back to your profile</a>
+            </div>
+        </div>
+        <!-- /span -->
+        <div class="span4"></div>
+    </div>
+    <!-- /row -->
+</div>
+{% endblock %}
