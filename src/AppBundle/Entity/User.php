@@ -214,7 +214,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @return array
+     *
      */
     public function getRoles()
     {
@@ -223,11 +223,12 @@ class User implements UserInterface, \Serializable
             $roles[] = $role->getName();
         }
         return $roles;
-        return $this->roles;
+
     }
 
     public function setRoles($role){
-        $this->roles = $role;
+        $this->roles = null;
+        $this->roles[] = $role;
         return $this;
     }
 

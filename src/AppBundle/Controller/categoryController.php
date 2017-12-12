@@ -152,7 +152,7 @@ class categoryController extends Controller
     }
     /**
      * @Route("/showcategory/{parent}")
-     * @Method({"GET"})
+     * @Method({"GET", "POST"})
      */
     public function ChildrenOfCategory($parent){
         $em = $this->getDoctrine()->getManager();
