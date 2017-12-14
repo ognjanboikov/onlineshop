@@ -42,6 +42,15 @@ class category
      */
     private $isActive;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Product", mappedBy="category")
+     */
+    private $products;
+
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -129,5 +138,22 @@ class category
     {
         return $this->id."";
     }
+
+    /**
+     * @return mixed
+     */
+    public function getProducts()
+    {
+        return $this->products;
+    }
+
+    /**
+     * @param mixed $products
+     */
+    public function setProducts($products)
+    {
+        $this->products = $products;
+    }
+
 }
 

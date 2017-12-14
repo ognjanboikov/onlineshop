@@ -19,8 +19,8 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
             ->createQuery(
                 'SELECT p FROM AppBundle:User p WHERE p.isBanned IS NULL '
             )
-           ->setFirstResult(0)
-           ->setMaxResults(2);
+           ->setFirstResult(2)
+           ->setMaxResults(100);
 
         $paginator = new Paginator($q);
         return $paginator;

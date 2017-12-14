@@ -58,9 +58,9 @@ class UserController extends Controller
             array('form' => $form->createView()));
     }
     /**
-     * @Route("/admin/userslist", name="list_users")*
+     * @Route("/admin/userslist/{page}", name="list_users")*
      */
-    public function listAllUsersAction(){
+    public function listAllUsersAction($page = 1){
         $em = $this->getDoctrine()->getManager();
         $users = $em->getRepository('AppBundle:User')->findAll();
         $t = $em->getRepository('AppBundle:User')->getUsersForPagination();
@@ -137,6 +137,7 @@ class UserController extends Controller
                         ->orderBy('u.name', 'ASC');
                 },
                 'choice_label' => 'name',
+
 
             ))
             ->add('save', SubmitType::class, array('label' => 'Save'))
