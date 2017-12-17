@@ -157,7 +157,7 @@ class categoryController extends Controller
     public function ChildrenOfCategory($parent){
         $em = $this->getDoctrine()->getManager();
          $categories = $em->getRepository('AppBundle:category')->getChildrenOfCategory($parent);
-
+            //TO DO show products here!!!
         return $this->render(
             'listChildrenOfCategory.html.twig',
             array('categories' => $categories)

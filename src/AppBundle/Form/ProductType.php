@@ -19,7 +19,9 @@ class ProductType extends AbstractType
             ->add('name')
             ->add('sku')
             ->add('image', FileType::class, array('label' => 'Image for the Product',
-                'data_class' => null
+                'data_class' => null,
+                'required' => false,
+
             ))
             ->add('description')
             ->add('price')

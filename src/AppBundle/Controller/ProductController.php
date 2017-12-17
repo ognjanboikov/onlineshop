@@ -3,22 +3,25 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Product;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * Product controller.
  *
- * @Route("product")
+ *
  */
 class ProductController extends Controller
 {
     /**
      * Lists all product entities.
      *
-     * @Route("/", name="product_index")
+     * @Route("/product", name="product_index")
      * @Method("GET")
      */
     public function indexAction()
@@ -35,7 +38,7 @@ class ProductController extends Controller
     /**
      * Creates a new product entity.
      *
-     * @Route("/new", name="product_new")
+     * @Route("/product/new", name="product_new")
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
@@ -46,6 +49,21 @@ class ProductController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            if(!empty($product->getImage())) {
+                $file = $product->getImage();
+                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+                $file->move(
+                    $this->getParameter('image_directory'),
+                    $fileName
+                );
+                $product->setImage($fileName);
+            }else{
+
+                $goodSubmitted = $form->all();
+                $goodSaved = $this->getDoctrine()->getManager()->getRepository("AppBundle:Product")->findOn($goodSubmitted->getId());
+                print_r($goodSubmitted->getId());
+                $product->setImage($goodSaved->getImages());
+            }
             $em->persist($product);
             $em->flush();
 
@@ -61,7 +79,7 @@ class ProductController extends Controller
     /**
      * Finds and displays a product entity.
      *
-     * @Route("/{id}", name="product_show")
+     * @Route("/product/{id}", name="product_show")
      * @Method("GET")
      */
     public function showAction(Product $product)
@@ -77,7 +95,7 @@ class ProductController extends Controller
     /**
      * Displays a form to edit an existing product entity.
      *
-     * @Route("/{id}/edit", name="product_edit")
+     * @Route("/product/{id}/edit", name="product_edit")
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, Product $product)
@@ -87,7 +105,22 @@ class ProductController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $product = $editForm->getData();
+            $em = $this->getDoctrine()->getManager();
+            //$product->setImage(
+           //     new File($this->getParameter('image_directory').'/'.$product->getImage())
+         //   );
+            //////////////////
+            //$this->getDoctrine()->getManager()->flush();
+            $file = $product->getImage();
+            $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+            $file->move(
+                $this->getParameter('image_directory'),
+                $fileName
+            );
+            $product->setImage($fileName);
+            $em->persist($product);
+            $em->flush();
 
             return $this->redirectToRoute('product_edit', array('id' => $product->getId()));
         }
@@ -98,11 +131,53 @@ class ProductController extends Controller
             'delete_form' => $deleteForm->createView(),
         ));
     }
+    /**
+     * @Route("/product/{id}/notalledit", name="product_edit_not_all")
+     * @Method({"GET", "POST"})
+     */
+    public function editWithoutImage(Request $request, Product $id){
+        $em = $this->getDoctrine()->getManager();
+        $product = $em->getRepository('AppBundle:Product')->findOneBy(
+            array('id' => $id)
+        );
+        $form = $this->createFormBuilder($product)
+            ->add('name')
+            ->add('sku')
+            ->add('description')
+            ->add('price')
+            ->add('isActive')
+            ->add('quantity')
+            ->add('categoryId', EntityType::class, array(
+                'class' => 'AppBundle:category',
+                'placeholder' => 'Choose an category',
+                'choice_label' => 'name',
+                'choice_value' => 'id',
+                'required' => false,
+            ))
+            ->add('save', SubmitType::class, array('label' => 'Save'))
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            $product = null;
+            $product = $form->getData();
+            $em = $this->getDoctrine()->getManager();
+            $productOld =$this->getDoctrine()->getRepository(Product::class)->findOneBy(
+                array('id' => $id)
+            );
+            $product->setImage($productOld->getImage());
+            $em->persist($product);
+            $em->flush();
+           //return $this->redirectToRoute('product_index');
+        }
+        return $this->render('product/editWithoutImage.html.twig', array(
+            'form' => $form->createView(),
+        ));
+    }
 
     /**
      * Deletes a product entity.
      *
-     * @Route("/{id}", name="product_delete")
+     * @Route("/product/{id}", name="product_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, Product $product)
