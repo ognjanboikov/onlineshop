@@ -61,7 +61,6 @@ class ProductController extends Controller
 
                 $goodSubmitted = $form->all();
                 $goodSaved = $this->getDoctrine()->getManager()->getRepository("AppBundle:Product")->findOn($goodSubmitted->getId());
-                print_r($goodSubmitted->getId());
                 $product->setImage($goodSaved->getImages());
             }
             $em->persist($product);
@@ -132,7 +131,7 @@ class ProductController extends Controller
         ));
     }
     /**
-     * @Route("/product/{id}/notalledit", name="product_edit_not_all")
+     * @Route("/product/editwithoutimage/{id}", name="edit_without_image")
      * @Method({"GET", "POST"})
      */
     public function editWithoutImage(Request $request, Product $id){
@@ -153,6 +152,7 @@ class ProductController extends Controller
                 'choice_label' => 'name',
                 'choice_value' => 'id',
                 'required' => false,
+                'mapped' => false,
             ))
             ->add('save', SubmitType::class, array('label' => 'Save'))
             ->getForm();

@@ -40,7 +40,7 @@ class UserController extends Controller
             $roleFromDB = $this->getDoctrine()
                 ->getRepository(Role::class)
                 ->getFirst();
-            $user->setRoles($roleFromDB);
+            $user->setRoles($roleFromDB[0]);
             $cash = 20.00;
             $user->setCash($cash);
             $user->setUsedCash(0);

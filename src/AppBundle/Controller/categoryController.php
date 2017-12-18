@@ -2,13 +2,16 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\AppBundle;
 use AppBundle\Entity\category;
+use AppBundle\Entity\Promotion;
 use AppBundle\Repository\categoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Role;
+use Services;
 
 /**
  * Category controller.
@@ -156,11 +159,25 @@ class categoryController extends Controller
      */
     public function ChildrenOfCategory($parent){
         $em = $this->getDoctrine()->getManager();
-         $categories = $em->getRepository('AppBundle:category')->getChildrenOfCategory($parent);
-            //TO DO show products here!!!
+        $categories = $em->getRepository('AppBundle:category')->getChildrenOfCategory($parent);
+
+        $products = $em->getRepository('AppBundle:Product')->getProductsByCategory($parent);
+        foreach ($products as $p){
+            $promotion = null;
+
+            $promotion[] = $em->getRepository('AppBundle:Promotion')->product($p->getId());
+            $promotion[] = $em->getRepository('AppBundle:Promotion')->category($p->getCategoryId());
+            arsort($promotion);
+            $pr =  $promotion[0];
+
+
+            $endPrice = ($pr * $p->getPrice())/100;
+            $p->setEndPrice($endPrice);
+        }
+
         return $this->render(
             'listChildrenOfCategory.html.twig',
-            array('categories' => $categories)
+            array('categories' => $categories, 'products' => $products)
         );
     }
 }

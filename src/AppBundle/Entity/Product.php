@@ -88,6 +88,15 @@ class Product
      */
     private $quantity;
 
+    /**
+     * @var decimal
+     */
+    private $percent;
+    /**
+     * @var decimal
+     */
+    private $endPrice;
+
 
     /**
      * Get id
@@ -291,5 +300,40 @@ class Product
     {
         return $this->quantity;
     }
+
+    /**
+     * @return decimal
+     */
+    public function getPercent()
+    {
+        return $this->percent;
+    }
+
+    /**
+     * @param decimal $percent
+     */
+    public function setPercent($percent)
+    {
+        if(null != $percent) {
+            $this->percent = $percent;
+        }
+    }
+
+    /**
+     * @return decimal
+     */
+    public function getEndPrice()
+    {
+        return $this->endPrice;
+    }
+
+    /**
+     * @param decimal $endPrice
+     */
+    public function setEndPrice($endPrice)
+    {
+        $this->endPrice = $endPrice;
+    }
+
 }
 

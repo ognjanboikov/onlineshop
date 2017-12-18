@@ -21,7 +21,6 @@ class ProductType extends AbstractType
             ->add('image', FileType::class, array('label' => 'Image for the Product',
                 'data_class' => null,
                 'required' => false,
-
             ))
             ->add('description')
             ->add('price')
@@ -33,6 +32,7 @@ class ProductType extends AbstractType
                     'choice_label' => 'name',
                     'choice_value' => 'id',
                     'required' => false,
+                    'multiple' => TRUE,
                 ));
     }
     

@@ -3,4 +3,36 @@
 {% for cat in categories %}
     <a href="/showcategory/{{ cat.id }}" class="btn btn-default navbar-btn">{{ cat.name }}</a>
 {% endfor %}
+    {% if products %}
+    <table class="table">
+    <tr align="center">
+        <th>SKU</th>
+        <th>Name</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Action</th>
+    </tr>
+        {% for product in products %}
+            <tr align="center">
+            <td> {{ product.sku }} </td>
+            <td> {{ product.name }} <br /> <img src="../uploads/images/{{ product.image }}" /> </td>
+            <td> {{ product.quantity }} </td>
+            <td> {{ product.price }} {{ product.percent }} {{ product.endPrice }} </td>
+            <td> View <br /> Add to cart
+                {% if app.user %}
+                    {% for role in app.user.roles %}
+                        {% if role == 'ROLE_ADMIN' %}
+                            <br /><a href="">Edit Information</a>
+                            <br /><a href="">Edit Image</a>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </td>
+
+        </tr>
+        {% endfor %}
+    {% else %}
+        There is no products in this category
+    {% endif %}
+    </table>
 {% endblock %}

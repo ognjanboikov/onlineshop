@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Promotion</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ promotion.id }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ promotion.type }}</td>
+            </tr>
+            <tr>
+                <th>Isactive</th>
+                <td>{{ promotion.isActive }}</td>
+            </tr>
+            <tr>
+                <th>Percent</th>
+                <td>{{ promotion.percent }}</td>
+            </tr>
+            <tr>
+                <th>Activefrom</th>
+                <td>{% if promotion.activeFrom %}{{ promotion.activeFrom|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Activeto</th>
+                <td>{% if promotion.activeTo %}{{ promotion.activeTo|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Madefor</th>
+                <td>{{ promotion.madeFor }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('promotion_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('promotion_edit', { 'id': promotion.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}
